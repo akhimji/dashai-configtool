@@ -1,4 +1,17 @@
 #!/usr/bin/python
+""" DashAi is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License
+
+    DashAi is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with DashAi. 
+"""
+
 from __future__ import print_function
 import random
 import os
@@ -240,6 +253,44 @@ def endpoints():
     raw_input("Press Enter to continue...")
     return;
 
+
+def impoter_output(endpoint,db):
+    outputblock="""
+        [agent]
+          interval = "10s"
+          round_interval = true
+          metric_batch_size = 1000
+          metric_buffer_limit = 10000
+          collection_jitter = "0s"
+          flush_interval = "10s"
+          flush_jitter = "0s"
+          precision = ""
+          logfile = ""
+          hostname = ""
+          omit_hostname = false
+
+        [[outputs.influxdb]]
+          urls = [\"%s\"] # required
+          database = \"%s\"
+          retention_policy = ""
+          write_consistency = "any"
+          timeout = "5s"
+          # username = "telegraf"
+          # password = "metricsmetricsmetricsmetrics"
+          # user_agent = "telegraf"
+          # udp_payload = 512
+          ## Optional SSL Config
+          # ssl_ca = "/etc/telegraf/ca.pem"
+          # ssl_cert = "/etc/telegraf/cert.pem"
+          # ssl_key = "/etc/telegraf/key.pem"
+          ## Use SSL but skip chain & host verification
+          # insecure_skip_verify = false
+     """
+    output=(outputblock % (endpoint, db))
+    print (output)
+    raw_input("Press Enter to continue...")
+    return output;
+
 ans=True
 while ans:
     os.system('clear')
@@ -254,7 +305,8 @@ while ans:
     3.Deploy Jenkins Integration
     4.Deploy JIRA Integration
     5.Deploy Google Sheets Integration
-    6.Get Endpoints
+    6.Apache
+    7.Endpoints
     X.Exit/Quit
     """)
 
@@ -272,6 +324,8 @@ while ans:
     elif ans=="5":
       deploysheets()
     elif ans=="6":
+      impoter_output()
+    elif ans=="7":
       endpoints()
     elif ans=="X":
       print(" Goodbye")
